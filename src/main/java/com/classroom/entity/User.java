@@ -41,7 +41,7 @@ public class User {
     }
 
     //Relationships
-    @OneToMany(mappedBy = "Teacher")
+    @OneToMany(mappedBy = "teacher")
     private List<Classroom> classroomsTaught;
 
     @OneToMany(mappedBy = "student")

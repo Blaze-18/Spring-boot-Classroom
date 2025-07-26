@@ -1,0 +1,53 @@
+package com.classroom.entity;
+
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Entity
+@Table(name = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User {
+    //Table Attributes
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id; //Primary Key
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    public enum Role{
+        STUDENT,
+        TEACHER,
+        ADMIN
+    }
+
+    //Relationships
+    @OneToMany(mappedBy = "Teacher")
+    private List<Classroom> classroomsTaught;
+
+    @OneToMany(mappedBy = "student")
+    private List<Enrollment> enrollments;
+
+    @OneToMany(mappedBy = "student")
+    private List<Submission> submissions;
+
+}

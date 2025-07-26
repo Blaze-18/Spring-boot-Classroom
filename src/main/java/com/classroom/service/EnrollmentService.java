@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,12 +47,19 @@ public class EnrollmentService {
 
         return enrollmentRepo.save(enrollment);
     }
-
-    public List<Enrollment> getEnrollmentsByStudent(Long studentId) {
-        return enrollmentRepo.findByStudentId(studentId);
+    // Get students in a classroom
+    public List<User> getStudentsByClassroomId(Long classroomId) {
+        return enrollmentRepo.findByClassroomId(classroomId)
+                .stream()
+                .map(Enrollment::getStudent)
+                .collect(Collectors.toList());
     }
 
-    public List<Enrollment> getEnrollmentsByClassroom(Long classroomId) {
-        return enrollmentRepo.findByClassroomId(classroomId);
+    // Get all classes for a student
+    public List<Classroom> getClassroomsByStudentId(Long studentId) {
+        return enrollmentRepo.findByStudentId(studentId)
+                .stream()
+                .map(Enrollment::getClassroom)
+                .collect(Collectors.toList());
     }
 }

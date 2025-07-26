@@ -1,14 +1,14 @@
 package com.classroom.service;
 
 import com.classroom.entity.User;
-import com.classroom.repository.AssignmentRepo;
 import com.classroom.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
+import static java.util.spi.ToolProvider.findFirst;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +24,18 @@ public class UserService {
         return userRepo.save(user);
     }
     // Update existing user details
-    public Optional<User> findByEmail(String email){
+    public List<User> findByEmail(String email){
         return userRepo.findByEmail(email);
     }
 
     public List<User> getUserByRole(User.Role role){
         return userRepo.findByRole(role);
+    }
+    public List <User> getUserByEmail(String email){
+        return userRepo.findByEmail(email);
+    }
+
+    public boolean checkPassword(User user, String password) {
+        return passwordEncoder.matches(password, user.getPassword());
     }
 }
